@@ -1,0 +1,118 @@
+.node {
+    width: 25px;
+    height: 25px;
+    outline: 1px solid rgb(175, 216, 248);
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.node-start {
+    background-color: green;
+}
+
+.node-finish {
+    background-color: red;
+}
+
+.node-visited {
+    animation-name: visitedAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    border: none;
+    }
+
+@keyframes visitedAnimation {
+    0% {
+        transform: scale(0.3);
+        background-color: #5326ac;
+        border-radius: 100%;
+        border: #fff;
+    }
+
+    50% {
+        background-color: #8d448b;
+    }
+
+    75% {
+        transform: scale(1.2);
+        background-color: #eccd8f;
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: #b793ff;
+    }
+}
+
+.node-wall {
+    /* animation-name: wall;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running; */
+    background-color: #421e88;
+}
+
+@keyframes wall {
+    0% {
+        transform: scale(0.6);
+        background-color: rgb(12, 53, 71);
+    }
+
+    50% {
+        transform: scale(1.2);
+        background-color: rgb(12, 53, 71);
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: rgb(12, 53, 71);
+    }
+}
+
+.node-is-path {
+    animation-name: shortestPath;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+@keyframes shortestPath {
+    0% {
+        transform: scale(0.6);
+        background-color: rgb(255, 254, 106);
+    }
+
+    50% {
+        transform: scale(1.2);
+        background-color: rgb(255, 254, 106);
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: rgb(255, 254, 106);
+    }
+}
+
+
+@keyframes popup {
+    from {
+        transform: scale(0);
+    } to {
+        transform: scale(1);
+    }
+}
