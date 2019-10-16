@@ -7,10 +7,12 @@ import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra'
 // CSS
 import './PathfindingVisualizer.css'
 
-const START_NODE_ROW = 0;
-const START_NODE_COL = 0;
-const FINISH_NODE_ROW = 29;
-const FINISH_NODE_COL = 39;
+const START_NODE_ROW = 1;
+const START_NODE_COL = 1;
+const FINISH_NODE_ROW = 28;
+const FINISH_NODE_COL = 38;
+const GRID_WIDTH = 40;
+const GRID_HEIGHT = 30;
 
 let newGrid;
 
@@ -80,14 +82,20 @@ export default class PathfindingVisualizer extends Component {
 
     handleMouseEnter(row, col) {
         if (!this.state.mouseIsPressed) return false;
-        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-        // this.setState({
-        //     grid: newGrid
-        // })
-        //console.log(this.state.mouseIsPressed);
+        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);        
+    }
+
+    clearGrid() {
+        const grid = getInitialGrid();
+        this.setState({ grid });        
         
-        //document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall'
-        
+        for (let row = 0; row < GRID_HEIGHT; row++) 
+            for (let col = 0; col < GRID_WIDTH; col++) {
+                if (!(row === START_NODE_ROW && col === START_NODE_COL) && !(row === FINISH_NODE_ROW && col === FINISH_NODE_COL)) {
+                    document.getElementById(`node-${ row }-${ col }`).className = 'node';
+                }
+            }
+        clearNewGrid();
     }
 
     handleMouseUp() {
@@ -104,6 +112,7 @@ export default class PathfindingVisualizer extends Component {
         return (
             <>
                 <button onClick={ () => this.visualizeDijkstra() }>Visualize Dijkstras algorithm!</button>
+                <button onClick={ () => this.clearGrid() }>Clear grid</button>
                 <div className="grid">
                     {
                         grid.map((row, rowInd) => {
@@ -141,9 +150,9 @@ export default class PathfindingVisualizer extends Component {
 
 const getInitialGrid = () => {
     const grid = [];
-    for (let row = 0; row < 30; row++) {
+    for (let row = 0; row < GRID_HEIGHT; row++) {
         const currentRow = [];
-        for (let col = 0; col < 40; col++) {
+        for (let col = 0; col < GRID_WIDTH; col++) {
             currentRow.push(createNode(col, row));
         }
         grid.push(currentRow);
@@ -156,7 +165,7 @@ const createNode = (col, row) => {
         col,
         row,
         isStart: row === START_NODE_ROW && col === START_NODE_COL,
-        isFinish: row == FINISH_NODE_ROW && col === FINISH_NODE_COL,
+        isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
         distance: Infinity,
         isVisited: false,
         isWall: false,
@@ -178,10 +187,14 @@ const getNewGridWithWallToggled = (grid, row, col) => {
     //console.log(newNode.isWall);
     
     newGrid[row][col] = newNode;
-    document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall'
+    //document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall'
     return newGrid;
 }
 
 const getGrid = () => {
     return newGrid;
+}
+
+const clearNewGrid = () => {
+    newGrid = [];
 }
