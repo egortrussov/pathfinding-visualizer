@@ -3,16 +3,17 @@ import Node from './Node/Node'
 
 // Algorightms
 import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra'
+import { generateSimpleGrid } from '../algorithms/gridAlgorithms'
 
 // CSS
 import './PathfindingVisualizer.css'
 
-const START_NODE_ROW = 1;
-const START_NODE_COL = 1;
-const FINISH_NODE_ROW = 28;
-const FINISH_NODE_COL = 38;
-const GRID_WIDTH = 40;
-const GRID_HEIGHT = 30;
+const START_NODE_ROW = 15;
+const START_NODE_COL = 9;
+const FINISH_NODE_ROW = 15;
+const FINISH_NODE_COL = 29;
+const GRID_WIDTH = 41;
+const GRID_HEIGHT = 31;
 
 let newGrid;
 
@@ -98,6 +99,13 @@ export default class PathfindingVisualizer extends Component {
         clearNewGrid();
     }
 
+    generateGrid() {
+        const { grid } = this.state;
+        newGrid = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
+
+        this.setState({ grid: newGrid })
+    }
+
     handleMouseUp() {
         this.setState({
             mouseIsPressed: false
@@ -113,6 +121,7 @@ export default class PathfindingVisualizer extends Component {
             <>
                 <button onClick={ () => this.visualizeDijkstra() }>Visualize Dijkstras algorithm!</button>
                 <button onClick={ () => this.clearGrid() }>Clear grid</button>
+                <button onClick={ () => this.generateGrid() }>Generate grid</button>
                 <div className="grid">
                     {
                         grid.map((row, rowInd) => {
