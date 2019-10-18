@@ -1,4 +1,7 @@
 export function generateSimpleGrid(grid, width, height) {
+    // Array for visualizing the creation of walls
+    let walls = []
+
     // Set walls around the grid
     for (let row = 0; row <= height; row++) { 
         const nodeLeft = grid[row][0],
@@ -7,6 +10,8 @@ export function generateSimpleGrid(grid, width, height) {
         nodeRight.isWall = true;
         grid[row][0] = nodeLeft;
         grid[row][width] = nodeRight;
+        walls.push(grid[row][0]);
+        walls.push(grid[row][width]);
     }
     for (let col = 0; col <= width; col++) { 
         const nodeTop = grid[0][col],
@@ -15,6 +20,8 @@ export function generateSimpleGrid(grid, width, height) {
         nodeBottom.isWall = true;
         grid[0][col] = nodeTop;
         grid[height][col] = nodeBottom;
+        walls.push(grid[0][col]);
+        walls.push(grid[height][col]);
     }
 
     // Set all even cols and rows
@@ -23,12 +30,14 @@ export function generateSimpleGrid(grid, width, height) {
             const node = grid[row][col];
             node.isWall = true;
             grid[row][col] = node;
+            //walls.push(node)
         }
     for (let col = 2; col <= width; col += 2) 
         for (let row = 1; row <= height; row++) {
             const node = grid[row][col];
             node.isWall = true;
             grid[row][col] = node;
+            //walls.push(node)
         }
 
     // Create random paths between cells
@@ -42,13 +51,19 @@ export function generateSimpleGrid(grid, width, height) {
                 const node = grid[row][col + 1];
                 node.isWall = false;
                 grid[row][col + 1] = node;
+                // walls.push(grid[row - 1][col]);
             } else {
                 const node = grid[row - 1][col];
                 node.isWall = false;
                 grid[row - 1][col] = node;
+                // walls.push(grid[row][col + 1]);
             }
         }
     }
+    for (let row = 1; row < height; row++)
+        for (let col = 1; col < width; col++) 
+            if (grid[row][col].isWall)
+                walls.push(grid[row][col]);
 
-    return grid;
+    return { newGrid: grid, walls: walls };
 }

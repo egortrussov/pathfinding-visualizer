@@ -16,13 +16,15 @@ const GRID_WIDTH = 41;
 const GRID_HEIGHT = 31;
 
 let newGrid;
+let isMouseDown = false;
 
 export default class PathfindingVisualizer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             grid: [],
-            mouseIsPressed: false
+            mouseIsPressed: false,
+            walls: []
         };
     }
 
@@ -73,6 +75,7 @@ export default class PathfindingVisualizer extends Component {
     }
 
     handleMouseDown(row, col) {
+        setMouseState(true);
         const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
        // console.log(row, col);
         
@@ -99,14 +102,36 @@ export default class PathfindingVisualizer extends Component {
         clearNewGrid();
     }
 
+    animateWalls(walls) {
+        for (let i = 0; i < walls.length; i++) {
+            let node = walls[i];
+            setTimeout(() => {
+                document.getElementById(`node-${ node.row }-${ node.col }`).className = 'node node-wall is-animated';
+                
+                setTimeout(() => {
+                    document.getElementById(`node-${ node.row }-${ node.col }`).className = 'node node-wall';
+                }, 1500)
+            }, i * 15)
+        }
+    }
+
     generateGrid() {
         const { grid } = this.state;
-        newGrid = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
+        const { newGrid, walls } = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
+        this.animateWalls(walls);
+        console.log(walls);
+        
+        setTimeout(() => {
+            this.setState({ grid: newGrid })
+        }, walls.length * 15)
 
-        this.setState({ grid: newGrid })
+         //this.setState({ grid: newGrid })
     }
 
     handleMouseUp() {
+        setMouseState(false);
+        console.log('The mouse is up!');
+        
         this.setState({
             mouseIsPressed: false
         })
@@ -185,10 +210,14 @@ const createNode = (col, row) => {
 const getNewGridWithWallToggled = (grid, row, col) => {
     newGrid = grid.slice();
     const node = newGrid[row][col];
+    console.log(isMouseDown);
+    
+    if (!isMouseDown) return;
     if (node.isWall) 
         document.getElementById(`node-${ row }-${ col }`).className = 'node';
-    else 
-        document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall'
+    else {
+        document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall';
+    }
     const newNode = {
         ...node,
         isWall: !node.isWall,
@@ -207,3 +236,7 @@ const getGrid = () => {
 const clearNewGrid = () => {
     newGrid = [];
 }
+
+const setMouseState = (state) => {
+    isMouseDown = state
+} 
