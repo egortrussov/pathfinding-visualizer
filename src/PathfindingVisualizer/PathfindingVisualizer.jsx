@@ -3,7 +3,7 @@ import Node from './Node/Node'
 
 // Algorightms
 import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra'
-import { generateSimpleGrid } from '../algorithms/gridAlgorithms'
+import { generateSimpleGrid, generateSidewinderGrid } from '../algorithms/gridAlgorithms'
 
 // CSS
 import './PathfindingVisualizer.css'
@@ -119,13 +119,24 @@ export default class PathfindingVisualizer extends Component {
         const { grid } = this.state;
         const { newGrid, walls } = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
         this.animateWalls(walls);
-        console.log(walls);
+        //console.log(walls);
         
         setTimeout(() => {
             this.setState({ grid: newGrid })
         }, walls.length * 15)
 
          //this.setState({ grid: newGrid })
+    }
+
+    generateSidewinderGrid() {
+        const { grid } = this.state;
+        const { newGrid, walls } = generateSidewinderGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
+
+        this.animateWalls(walls);
+
+        setTimeout(() => {
+            this.setState({ grid: newGrid })
+        }, walls.length * 15)
     }
 
     handleMouseUp() {
@@ -147,6 +158,7 @@ export default class PathfindingVisualizer extends Component {
                 <button onClick={ () => this.visualizeDijkstra() }>Visualize Dijkstras algorithm!</button>
                 <button onClick={ () => this.clearGrid() }>Clear grid</button>
                 <button onClick={ () => this.generateGrid() }>Generate grid</button>
+                <button onClick={ () => this.generateSidewinderGrid() }>Generate sidewinder grid</button>
                 <div className="grid">
                     {
                         grid.map((row, rowInd) => {
