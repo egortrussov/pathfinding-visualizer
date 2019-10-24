@@ -7,6 +7,7 @@ import { generateSimpleGrid, generateSidewinderGrid } from '../algorithms/gridAl
 
 // CSS
 import './PathfindingVisualizer.css'
+import Navbar from './Navbar/Navbar'
 
 const START_NODE_ROW = 15;
 const START_NODE_COL = 9;
@@ -28,7 +29,7 @@ export default class PathfindingVisualizer extends Component {
         };
     }
 
-    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
                 setTimeout(() => {
@@ -58,13 +59,22 @@ export default class PathfindingVisualizer extends Component {
         }
     }
 
-    visualizeDijkstra() {
+    visualizeAlgorithm(algoType) {
         const { grid } = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        let visitedNodesInOrder;
+        switch (algoType) {
+            case 'dijkstra':
+                visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+                break;
+        
+            default:
+                break;
+        }
+        
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
         console.log(visitedNodesInOrder);
         
     }
@@ -115,7 +125,8 @@ export default class PathfindingVisualizer extends Component {
         }
     }
 
-    generateGrid() {
+    generateGrid(gridType) {
+        this.clearGrid();
         const { grid } = this.state;
         const { newGrid, walls } = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
         this.animateWalls(walls);
@@ -129,6 +140,7 @@ export default class PathfindingVisualizer extends Component {
     }
 
     generateSidewinderGrid() {
+        this.clearGrid();
         const { grid } = this.state;
         const { newGrid, walls } = generateSidewinderGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
 
@@ -155,10 +167,14 @@ export default class PathfindingVisualizer extends Component {
 
         return (
             <>
-                <button onClick={ () => this.visualizeDijkstra() }>Visualize Dijkstras algorithm!</button>
+                {/* <button onClick={ () => this.visualizeDijkstra() }>Visualize Dijkstras algorithm!</button>
                 <button onClick={ () => this.clearGrid() }>Clear grid</button>
                 <button onClick={ () => this.generateGrid() }>Generate grid</button>
-                <button onClick={ () => this.generateSidewinderGrid() }>Generate sidewinder grid</button>
+                <button onClick={ () => this.generateSidewinderGrid() }>Generate sidewinder grid</button> */}
+                <Navbar visualizeAlgorithm={ (algoType) => this.visualizeAlgorithm(algoType) }
+                        generateGrid={ () => this.generateGrid() }
+                        generateSidewinderGrid={ () => this.generateSidewinderGrid() }
+                        clearGrid={ () => this.clearGrid() }></Navbar>
                 <div className="grid">
                     {
                         grid.map((row, rowInd) => {
@@ -213,6 +229,7 @@ const createNode = (col, row) => {
         isStart: row === START_NODE_ROW && col === START_NODE_COL,
         isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
         distance: Infinity,
+        isWeighted: false,
         isVisited: false,
         isWall: false,
         previousNode: null

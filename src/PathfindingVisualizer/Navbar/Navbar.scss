@@ -1,0 +1,115 @@
+$primary-color: rgb(12, 53, 71);
+$cta-color: rgb(0, 202, 148);
+
+nav {
+    background-color: $primary-color;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    padding: 0 1rem;
+    height: 50px;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+
+    .nav-logo {
+        font-size: 1.3rem;
+        font-weight: bold;;
+    }
+
+    .wrapper {
+        display: flex;
+        align-items: center;
+        text-align: left;
+
+        .nav-btns {
+            display: flex;
+            margin-left: 2rem;
+            align-items: center;
+            
+    
+            button {
+                margin: 0 .2rem;
+                padding: .6rem 1rem;
+                background: none;
+                height: 50px;;
+                position: relative;
+                border: none;
+                color: #fff;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: all .2s;
+                display: inline-block;
+
+                &.active {
+                    background-color: $cta-color;
+                    border-radius: .1rem;
+                    color: #fff;
+
+                    &:hover {
+                        color: #fff;
+                    }
+                }
+
+                .popout {
+                    position: absolute;
+                    background-color: $primary-color;
+                    transform-origin: top;
+                    transition: .1s;
+                    transform: scale(0);
+                    top: 55px;
+                    left: 0;
+                    border-radius: .1rem;
+                    width: auto !important;
+                    max-width: 1000px;
+                    white-space: nowrap;
+                    //min-width: 200px;
+                    //padding: .2rem 0;
+                    //padding: 5px;
+
+                    &.active {
+                        transform: scale(1);
+                    }
+
+                    button, a {
+                        display: block;
+                        margin: 5px !important;
+                        height: auto;
+                        padding: .8rem 1rem;
+                        text-align: left;
+                        min-width: 140px;
+                        max-width: 1000px;
+                        white-space: nowrap;
+                        //width: auto;
+
+                        &:hover {
+                            background-color: $cta-color;
+                            color: #fff;
+                        }
+                    }
+                }
+    
+                &:hover {
+                    color: $cta-color;
+                }
+                
+                &.cta {
+                    background-color: $cta-color;
+                    border-radius: .2rem;
+                    padding: .6rem 2rem;
+                    margin: 0 .4rem;
+                    height: calc(50px - 10px);
+                    &:hover {
+                        color: #fff;
+                        background-color: rgb(0, 179, 131);
+                    }
+                }
+            }
+        }
+    }
+
+    
+}
