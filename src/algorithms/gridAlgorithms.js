@@ -45,7 +45,7 @@ export function generateSidewinderGrid(grid, width, height) {
                 if (!randomChoice && col !== width - 1) 
                     grid[row][col + 1].isWall = false;
                 else {
-                    let selectedColumn = Math.ceil(Math.random() * (setStart - col + 1)) + col;
+                    let selectedColumn = Math.ceil(Math.random() * (col - setStart + 1)) + setStart - 1;
                     selectedColumn += selectedColumn % 2 === 0;
                     console.log(selectedColumn);
                     

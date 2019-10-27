@@ -110,7 +110,7 @@ export default class PathfindingVisualizer extends Component {
 
     clearGrid() {
         const grid = getInitialGrid();
-        this.setState({ grid });        
+        this.setState({ grid: grid });        
         
         for (let row = 0; row < GRID_HEIGHT; row++) 
             for (let col = 0; col < GRID_WIDTH; col++) {
@@ -146,10 +146,10 @@ export default class PathfindingVisualizer extends Component {
     }
 
     generateGrid(gridType) {
-        //prepareGridForAlgorithm();
+        prepareGridForAlgorithm();
         this.clearGrid();
         this.clearPath();
-        const { grid } = this.state;
+        const grid = getInitialGrid();
         const { newGrid, walls } = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
         this.animateWalls(walls);
         //console.log(walls);
@@ -166,7 +166,7 @@ export default class PathfindingVisualizer extends Component {
     generateSidewinderGrid() {
         this.clearGrid();
         this.clearPath();
-        const { grid } = this.state;
+        const grid  = getInitialGrid();
         const { newGrid, walls } = generateSidewinderGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
 
         this.animateWalls(walls);
