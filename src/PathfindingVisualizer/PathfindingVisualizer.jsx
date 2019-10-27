@@ -16,7 +16,7 @@ const FINISH_NODE_COL = 29;
 const GRID_WIDTH = 41;
 const GRID_HEIGHT = 31;
 
-let newGrid;
+let newGrid = [];
 let isMouseDown = false;
 
 export default class PathfindingVisualizer extends Component {
@@ -25,7 +25,8 @@ export default class PathfindingVisualizer extends Component {
         this.state = {
             grid: [],
             mouseIsPressed: false,
-            walls: []
+            walls: [],
+            visitedNodes: []
         };
     }
 
@@ -40,7 +41,10 @@ export default class PathfindingVisualizer extends Component {
             setTimeout(() => {
                 const node = visitedNodesInOrder[i];
                 if (!(node.col === START_NODE_COL && node.row === START_NODE_ROW) && !(node.col === FINISH_NODE_COL && node.row === FINISH_NODE_ROW))
-                    document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+                    document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited is-animated';
+                setTimeout(() => {
+                    document.getElementById(`node-${node.row}-${node.col}`).classList.remove('is-animated');
+                }, 1500)
                 
                 
                 //console.log(node.col, node.row, newGrid[node.col][node.row]);
@@ -60,7 +64,11 @@ export default class PathfindingVisualizer extends Component {
     }
 
     visualizeAlgorithm(algoType) {
-        const { grid } = this.state;
+        prepareGridForAlgorithm();
+        this.clearPath();
+        const grid = getGrid();
+        console.log(grid === getGrid(), '4454545');
+        
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         let visitedNodesInOrder;
@@ -72,10 +80,9 @@ export default class PathfindingVisualizer extends Component {
             default:
                 break;
         }
-        
+
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-        console.log(visitedNodesInOrder);
         
     }
 
@@ -96,7 +103,9 @@ export default class PathfindingVisualizer extends Component {
 
     handleMouseEnter(row, col) {
         if (!this.state.mouseIsPressed) return false;
-        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);        
+        if (row === START_NODE_ROW && col === START_NODE_COL ||
+            row === FINISH_NODE_ROW && col === FINISH_NODE_COL) return false;
+        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);   
     }
 
     clearGrid() {
@@ -125,12 +134,27 @@ export default class PathfindingVisualizer extends Component {
         }
     }
 
+    clearPath() {
+        prepareGridForAlgorithm();
+        //this.setState({ grid: getGrid() });
+        for (let row = 0; row < GRID_HEIGHT; row++) {
+            for (let col = 0; col < GRID_WIDTH; col++) {
+                document.getElementById(`node-${ row }-${ col }`).classList.remove('node-visited');
+                document.getElementById(`node-${ row }-${ col }`).classList.remove('node-is-path');
+            }
+        }
+    }
+
     generateGrid(gridType) {
+        //prepareGridForAlgorithm();
         this.clearGrid();
+        this.clearPath();
         const { grid } = this.state;
         const { newGrid, walls } = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
         this.animateWalls(walls);
         //console.log(walls);
+
+        setNewGridState(newGrid);
         
         setTimeout(() => {
             this.setState({ grid: newGrid })
@@ -141,10 +165,13 @@ export default class PathfindingVisualizer extends Component {
 
     generateSidewinderGrid() {
         this.clearGrid();
+        this.clearPath();
         const { grid } = this.state;
         const { newGrid, walls } = generateSidewinderGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
 
         this.animateWalls(walls);
+
+        setNewGridState(newGrid);
 
         setTimeout(() => {
             this.setState({ grid: newGrid })
@@ -167,14 +194,18 @@ export default class PathfindingVisualizer extends Component {
 
         return (
             <>
-                {/* <button onClick={ () => this.visualizeDijkstra() }>Visualize Dijkstras algorithm!</button>
-                <button onClick={ () => this.clearGrid() }>Clear grid</button>
-                <button onClick={ () => this.generateGrid() }>Generate grid</button>
-                <button onClick={ () => this.generateSidewinderGrid() }>Generate sidewinder grid</button> */}
+                <div onMouseOver={ () => {
+                    console.log('Hello!');
+                    
+                    if (mouseIsPressed) 
+                        this.handleMouseUp();
+                    } } 
+                    className="background"></div>
                 <Navbar visualizeAlgorithm={ (algoType) => this.visualizeAlgorithm(algoType) }
                         generateGrid={ () => this.generateGrid() }
                         generateSidewinderGrid={ () => this.generateSidewinderGrid() }
-                        clearGrid={ () => this.clearGrid() }></Navbar>
+                        clearGrid={ () => this.clearGrid() }
+                        clearPath={ () => this.clearPath() }></Navbar>
                 <div className="grid">
                     {
                         grid.map((row, rowInd) => {
@@ -219,6 +250,9 @@ const getInitialGrid = () => {
         }
         grid.push(currentRow);
     }
+    newGrid = grid;
+    console.log(newGrid);
+    
     return grid;
 }
 
@@ -239,7 +273,7 @@ const createNode = (col, row) => {
 const getNewGridWithWallToggled = (grid, row, col) => {
     newGrid = grid.slice();
     const node = newGrid[row][col];
-    console.log(isMouseDown);
+    //console.log(isMouseDown);
     
     if (!isMouseDown) return;
     if (node.isWall) 
@@ -254,8 +288,22 @@ const getNewGridWithWallToggled = (grid, row, col) => {
     //console.log(newNode.isWall);
     
     newGrid[row][col] = newNode;
+    //console.log(newGrid[row][col].isWall);
+    
     //document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall'
     return newGrid;
+}
+
+const prepareGridForAlgorithm = () => {
+    console.log(newGrid);
+    
+    for (let row = 0; row < GRID_HEIGHT; row++) {
+        for (let col = 0; col < GRID_WIDTH; col++) {
+            newGrid[row][col].isVisited = false;
+            newGrid[row][col].distance = Infinity;
+            newGrid[row][col].previousNode = null;
+        }
+    }
 }
 
 const getGrid = () => {
@@ -263,7 +311,11 @@ const getGrid = () => {
 }
 
 const clearNewGrid = () => {
-    newGrid = [];
+    newGrid = getInitialGrid();
+}
+
+const setNewGridState = (grid) => {
+    newGrid = grid;
 }
 
 const setMouseState = (state) => {

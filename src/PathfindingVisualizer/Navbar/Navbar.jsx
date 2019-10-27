@@ -40,10 +40,10 @@ class Navbar extends Component {
     }
 
     render() {
-        const { visualizeDijkstra,
-                generateGrid,
+        const { generateGrid,
                 generateSidewinderGrid,
-                clearGrid } = this.props;
+                clearGrid,
+                clearPath } = this.props;
 
         return (
             <nav>
@@ -80,7 +80,7 @@ class Navbar extends Component {
                         </div>
                         <div className="btns-right">
                             <button onClick={ () => clearGrid() }>Clear grid</button>
-                            <button>Clear path</button>
+                            <button onClick={ () => clearPath() }>Clear path</button>
                             <button>Speed: </button>
                         </div>
                     </div>

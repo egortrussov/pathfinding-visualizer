@@ -17,6 +17,10 @@
 }
 
 .node-visited {
+    background-color: rgba(0, 190, 218, 0.75);
+}
+
+.node-visited.is-animated {
     animation-name: visitedAnimation;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
