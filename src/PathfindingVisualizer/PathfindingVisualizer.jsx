@@ -8,6 +8,7 @@ import { generateSimpleGrid, generateSidewinderGrid } from '../algorithms/gridAl
 // CSS
 import './PathfindingVisualizer.css'
 import Navbar from './Navbar/Navbar'
+import { astar } from '../algorithms/astar'
 
 const START_NODE_ROW = 15;
 const START_NODE_COL = 9;
@@ -76,6 +77,8 @@ export default class PathfindingVisualizer extends Component {
             case 'dijkstra':
                 visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
                 break;
+            case 'astar':
+                visitedNodesInOrder = astar(grid, startNode, finishNode);
         
             default:
                 break;
@@ -266,7 +269,9 @@ const createNode = (col, row) => {
         isWeighted: false,
         isVisited: false,
         isWall: false,
-        previousNode: null
+        previousNode: null,
+        gN: 0,
+        hN: 0
     }
 }
 

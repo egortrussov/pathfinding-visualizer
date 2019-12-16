@@ -57,7 +57,7 @@ class Navbar extends Component {
                                 <div className="popout algo-popout" id="algo-popout">
                                     <button onClick={ () => this.setState({ selectedAlgorithm: 'dijkstra', btnErrorMessage: '' })
                                         }>Dijkstra</button>
-                                    <button>Dijkstra</button>
+                                    <button onClick={ () => this.setState({ selectedAlgorithm: 'astar', btnErrorMessage: '' }) }>A*</button>
                                     <button>Dijkstra</button>
                                     <button>Dijkstra</button>
                                 </div>
