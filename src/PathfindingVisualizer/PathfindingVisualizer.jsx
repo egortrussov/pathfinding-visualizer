@@ -27,16 +27,20 @@ export default class PathfindingVisualizer extends Component {
             grid: [],
             mouseIsPressed: false,
             walls: [],
-            visitedNodes: []
+            visitedNodes: [],
+            speed: 10
         };
     }
 
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
+        const speed = this.state.speed;
+        console.log(speed);
+        
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
                 setTimeout(() => {
                     this.animateShortestPath(nodesInShortestPathOrder);
-                }, 10 * i);
+                }, speed * i);
                 return;
             }  
             setTimeout(() => {
@@ -50,7 +54,7 @@ export default class PathfindingVisualizer extends Component {
                 
                 //console.log(node.col, node.row, newGrid[node.col][node.row]);
                 
-            }, 10 * i)
+            }, speed * i)
         }
     }
 
@@ -60,7 +64,7 @@ export default class PathfindingVisualizer extends Component {
                 const node = nodesInShortestPathOrder[i];
                 if (!(node.col === START_NODE_COL && node.row === START_NODE_ROW) && !(node.col === FINISH_NODE_COL && node.row === FINISH_NODE_ROW))
                 document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-is-path'
-            }, i * 10)
+            }, i * this.state.speed)
         }
     }
 
@@ -192,6 +196,19 @@ export default class PathfindingVisualizer extends Component {
         this.setState({ grid: updatedGrid })
     }
 
+    setAlgoSpeed(speed) {
+        let speedValue;
+        if (speed === 'fast') speedValue = 10;
+            else if (speed === 'medium') speedValue = 15;
+                else speedValue = 20;
+        console.log(speedValue);
+        
+        this.setState({
+            ...this.state,
+            speed: speedValue
+        })
+    }
+
     render() {
         const { grid, mouseIsPressed } = this.state;
 
@@ -208,7 +225,8 @@ export default class PathfindingVisualizer extends Component {
                         generateGrid={ () => this.generateGrid() }
                         generateSidewinderGrid={ () => this.generateSidewinderGrid() }
                         clearGrid={ () => this.clearGrid() }
-                        clearPath={ () => this.clearPath() }></Navbar>
+                        clearPath={ () => this.clearPath() }
+                        setAlgoSpeed={ (speed) => this.setAlgoSpeed(speed) }></Navbar>
                 <div className="grid">
                     {
                         grid.map((row, rowInd) => {

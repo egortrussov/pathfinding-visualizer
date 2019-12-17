@@ -47,7 +47,6 @@ function updateUnvisitedNeighborsForAstar(node, grid, finishNode) {
 
 function updateUnvisitedNeighborsForDijkstra(node, grid, finishNode) {
     const neighbors = getUnvisitedNeighbors(node, grid);
-    console.log('Neighbors: ', neighbors);
     
     for (const neighbor of neighbors) {
         neighbor.distance = node.distance + 1;

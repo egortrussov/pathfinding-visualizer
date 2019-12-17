@@ -8,7 +8,8 @@ class Navbar extends Component {
 
         this.state = {
             selectedAlgorithm: '',
-            btnErrorMessage: ''
+            btnErrorMessage: '',
+            selectedSpeed: 'fast'
         }
     }
 
@@ -20,16 +21,34 @@ class Navbar extends Component {
             case 'algo':
                 document.getElementById(`grid-popout`).classList.remove("active");
                 document.getElementById(`grid-btn`).classList.remove("active");
+                document.getElementById(`speed-btn`).classList.remove("active");
+                document.getElementById(`speed-popout`).classList.remove("active");
                 break;
             case 'grid':
                 document.getElementById(`algo-popout`).classList.remove("active");
                 document.getElementById(`algo-btn`).classList.remove("active");
+                document.getElementById(`speed-btn`).classList.remove("active");
+                document.getElementById(`speed-popout`).classList.remove("active");
+                break;
+            case 'speed':
+                document.getElementById(`algo-popout`).classList.remove("active");
+                document.getElementById(`algo-btn`).classList.remove("active");
+                document.getElementById(`grid-popout`).classList.remove("active");
+                document.getElementById(`grid-btn`).classList.remove("active");
                 break;
 
             default:
                 break;
         }
     }
+
+    setSpeed(speed) {
+        this.setState({
+            ...this.state,
+            selectedSpeed: speed
+        })
+        this.props.setAlgoSpeed(speed);
+    } 
 
     runVisualizer() {
         if (!this.state.selectedAlgorithm) {
@@ -70,7 +89,7 @@ class Navbar extends Component {
                             </button>
                             <button>Add bomb</button>
                         </div>
-                        <div className="btns-middle">
+                        <div className="btns-middle" >
                             <button onClick={ () => this.runVisualizer() } className="cta">
                                 { this.state.btnErrorMessage ? this.state.btnErrorMessage : `Visualize${ this.state.selectedAlgorithm ? ' ' : '' }${ this.state.selectedAlgorithm }!`
                                 }
@@ -81,7 +100,13 @@ class Navbar extends Component {
                         <div className="btns-right">
                             <button onClick={ () => clearGrid() }>Clear grid</button>
                             <button onClick={ () => clearPath() }>Clear path</button>
-                            <button>Speed: </button>
+                            <button onClick={ () => this.handlePopout('speed') } id="speed-btn">Speed: { this.state.selectedSpeed }
+                                <div className="popout speed-popout" id="speed-popout">
+                                    <button onClick={ () => this.setSpeed('fast') }>Fast</button>
+                                    <button onClick={ () => this.setSpeed('medium') }>Medium</button>
+                                    <button onClick={ () => this.setSpeed('slow') }>Slow</button>
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>
