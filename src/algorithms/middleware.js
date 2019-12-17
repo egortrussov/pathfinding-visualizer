@@ -2,6 +2,32 @@ function sortNodesByDistance(unvisitedNodes) {
     unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
 }
 
+function sortNodesByDistanceForAstar(unvisitedNodes) {
+    // let currentClosest, index;
+    // for (let i = 0; i < unvisitedNodes.length; i++) {
+    //     if (!currentClosest || currentClosest.distance > nodes[unvisitedNodes[i]].distance) {
+    //     currentClosest = nodes[unvisitedNodes[i]];
+    //     index = i;
+    //     } else if (currentClosest.distance === nodes[unvisitedNodes[i]].distance) {
+    //     if (currentClosest.gN > nodes[unvisitedNodes[i]].gN) {
+    //         currentClosest = nodes[unvisitedNodes[i]];
+    //         index = i;
+    //     }
+    //     }
+    // }
+    // unvisitedNodes.splice(index, 1);
+    // return currentClosest;
+
+    unvisitedNodes.sort((nodeA, nodeB) => {
+        
+        if (nodeA.distance == nodeB.distance && nodeA.distance !== Infinity) {
+            return nodeA.hN - nodeB.hN;
+        }
+        else 
+            return nodeA.distance - nodeB.distance;
+    });
+}
+
 function getDistanceToFinishNode(node, finishNode) {
     console.log(finishNode, node);
     
@@ -9,8 +35,7 @@ function getDistanceToFinishNode(node, finishNode) {
 }
 
 function updateUnvisitedNeighborsForAstar(node, grid, finishNode) {
-    const neighbors = getUnvisitedNeighbors(node, grid);
-    console.log('Neighbors: ', neighbors);
+    let neighbors = getUnvisitedNeighbors(node, grid);
     
     for (const neighbor of neighbors) {
         neighbor.gN = node.gN + 1;
@@ -27,6 +52,7 @@ function updateUnvisitedNeighborsForDijkstra(node, grid, finishNode) {
     for (const neighbor of neighbors) {
         neighbor.distance = node.distance + 1;
         neighbor.previousNode = node;
+        grid[neighbor.row][neighbor.col] = neighbor;
     }
 }
 
@@ -50,6 +76,7 @@ function getAllNodes(grid) {
 
 export {
     sortNodesByDistance,
+    sortNodesByDistanceForAstar,
     getDistanceToFinishNode,
     updateUnvisitedNeighborsForAstar,
     updateUnvisitedNeighborsForDijkstra,

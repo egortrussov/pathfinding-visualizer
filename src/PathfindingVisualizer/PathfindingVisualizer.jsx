@@ -270,7 +270,7 @@ const createNode = (col, row) => {
         isVisited: false,
         isWall: false,
         previousNode: null,
-        gN: 0,
+        gN: Infinity,
         hN: 0
     }
 }
@@ -299,13 +299,17 @@ const getNewGridWithWallToggled = (grid, row, col) => {
     return newGrid;
 }
 
-const prepareGridForAlgorithm = () => {
-    console.log(newGrid);
-    
+const getDistance = (x1, y1, x2, y2) => {
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+} 
+
+const prepareGridForAlgorithm = () => {    
     for (let row = 0; row < GRID_HEIGHT; row++) {
         for (let col = 0; col < GRID_WIDTH; col++) {
             newGrid[row][col].isVisited = false;
             newGrid[row][col].distance = Infinity;
+            newGrid[row][col].gN = Infinity;
+            newGrid[row][col].hN = getDistance(row, col, FINISH_NODE_ROW, FINISH_NODE_COL);
             newGrid[row][col].previousNode = null;
         }
     }
