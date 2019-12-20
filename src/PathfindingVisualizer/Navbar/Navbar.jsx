@@ -78,6 +78,7 @@ class Navbar extends Component {
                                         }>Dijkstra</button>
                                     <button onClick={ () => this.setState({ selectedAlgorithm: 'astar', btnErrorMessage: '' }) }>A*</button>
                                     <button onClick={ () => this.setState({ selectedAlgorithm: 'dfs', btnErrorMessage: '' }) }>DFS</button>
+                                    <button onClick={ () => this.setState({ selectedAlgorithm: 'bfs', btnErrorMessage: '' }) }>BFS</button>
                                     <button>Dijkstra</button>
                                     <button>Dijkstra</button>
                                 </div>

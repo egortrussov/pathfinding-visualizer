@@ -10,6 +10,7 @@ import './PathfindingVisualizer.css'
 import Navbar from './Navbar/Navbar'
 import { astar } from '../algorithms/astar'
 import { dfs } from '../algorithms/dfs'
+import { bfs } from '../algorithms/bfs'
 import { getAllNodes } from '../algorithms/middleware'
 
 const START_NODE_ROW = 15;
@@ -87,9 +88,10 @@ export default class PathfindingVisualizer extends Component {
                 visitedNodesInOrder = astar(grid, startNode, finishNode);
                 break;
             case 'dfs':
-                let gridd = getGrid();
-                console.log(grid[0][0].isWall);
                 visitedNodesInOrder = dfs(getGrid(), startNode, finishNode);
+                break;
+            case 'bfs':
+                visitedNodesInOrder = bfs(getGrid(), startNode, finishNode);
                 break;
                 
         
