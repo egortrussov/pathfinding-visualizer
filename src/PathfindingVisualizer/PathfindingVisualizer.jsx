@@ -9,6 +9,8 @@ import { generateSimpleGrid, generateSidewinderGrid } from '../algorithms/gridAl
 import './PathfindingVisualizer.css'
 import Navbar from './Navbar/Navbar'
 import { astar } from '../algorithms/astar'
+import { dfs } from '../algorithms/dfs'
+import { getAllNodes } from '../algorithms/middleware'
 
 const START_NODE_ROW = 15;
 const START_NODE_COL = 9;
@@ -83,12 +85,21 @@ export default class PathfindingVisualizer extends Component {
                 break;
             case 'astar':
                 visitedNodesInOrder = astar(grid, startNode, finishNode);
+                break;
+            case 'dfs':
+                let gridd = getGrid();
+                console.log(grid[0][0].isWall);
+                visitedNodesInOrder = dfs(getGrid(), startNode, finishNode);
+                break;
+                
         
             default:
                 break;
         }
 
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        console.log(nodesInShortestPathOrder);
+        
         this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
         
     }
@@ -193,7 +204,13 @@ export default class PathfindingVisualizer extends Component {
             mouseIsPressed: false
         })
         const updatedGrid = getGrid();
-        this.setState({ grid: updatedGrid })
+        console.log(updatedGrid[0][0], "jjjjjjjjjjjj");
+        
+        this.setState({ grid: updatedGrid }, () => {
+            console.log("UPDATED!!!")
+            console.log(this.state.grid[0][0].isWall, getGrid()[0][0].isWall, updatedGrid[0][0].isWall);
+               
+        })
     }
 
     setAlgoSpeed(speed) {
@@ -296,7 +313,6 @@ const createNode = (col, row) => {
 const getNewGridWithWallToggled = (grid, row, col) => {
     newGrid = grid.slice();
     const node = newGrid[row][col];
-    //console.log(isMouseDown);
     
     if (!isMouseDown) return;
     if (node.isWall) 
@@ -308,12 +324,8 @@ const getNewGridWithWallToggled = (grid, row, col) => {
         ...node,
         isWall: !node.isWall,
     };
-    //console.log(newNode.isWall);
     
     newGrid[row][col] = newNode;
-    //console.log(newGrid[row][col].isWall);
-    
-    //document.getElementById(`node-${ row }-${ col }`).className = 'node node-wall'
     return newGrid;
 }
 
@@ -324,11 +336,17 @@ const getDistance = (x1, y1, x2, y2) => {
 const prepareGridForAlgorithm = () => {    
     for (let row = 0; row < GRID_HEIGHT; row++) {
         for (let col = 0; col < GRID_WIDTH; col++) {
-            newGrid[row][col].isVisited = false;
-            newGrid[row][col].distance = Infinity;
-            newGrid[row][col].gN = Infinity;
-            newGrid[row][col].hN = getDistance(row, col, FINISH_NODE_ROW, FINISH_NODE_COL);
-            newGrid[row][col].previousNode = null;
+            newGrid[row][col] = {
+                ...newGrid[row][col],
+                isStart: row === START_NODE_ROW && col === START_NODE_COL,
+                isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+                distance: Infinity,
+                isWeighted: false,
+                isVisited: false,
+                previousNode: null,
+                gN: Infinity,
+                hN: 0
+            }
         }
     }
 }
@@ -348,3 +366,7 @@ const setNewGridState = (grid) => {
 const setMouseState = (state) => {
     isMouseDown = state
 } 
+
+export {
+    newGrid
+};

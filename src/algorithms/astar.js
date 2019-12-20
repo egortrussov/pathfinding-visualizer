@@ -4,6 +4,8 @@ export function astar(grid, startNode, finishNode) {
     if (!startNode || !finishNode || startNode === finishNode) {
         return false;
     }
+    console.log("ASTAR!");
+    
     const visitedNodesInOrder = [];
     startNode.distance = 0;
     startNode.gN = 0;
