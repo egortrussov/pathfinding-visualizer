@@ -11,8 +11,6 @@ export function bfs(grid, startNode, finishNode) {
     while (!!unvisitedNodes.length && k <= 1500) {
         k++;
         const closestNode = unvisitedNodes.shift();
-        //console.log(unvisitedNodes.length);
-        
         // We skip the walls
         if (closestNode.isWall) continue;
         if (closestNode.distance === Infinity) 

@@ -37,7 +37,6 @@ export default class PathfindingVisualizer extends Component {
 
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
         const speed = this.state.speed;
-        console.log(speed);
         
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
@@ -53,9 +52,6 @@ export default class PathfindingVisualizer extends Component {
                 setTimeout(() => {
                     document.getElementById(`node-${node.row}-${node.col}`).classList.remove('is-animated');
                 }, 1500)
-                
-                
-                //console.log(node.col, node.row, newGrid[node.col][node.row]);
                 
             }, speed * i)
         }
@@ -75,7 +71,6 @@ export default class PathfindingVisualizer extends Component {
         prepareGridForAlgorithm();
         this.clearPath();
         const grid = getGrid();
-        console.log(grid === getGrid(), '4454545');
         
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -100,7 +95,6 @@ export default class PathfindingVisualizer extends Component {
         }
 
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        console.log(nodesInShortestPathOrder);
         
         this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
         
@@ -114,7 +108,6 @@ export default class PathfindingVisualizer extends Component {
     handleMouseDown(row, col) {
         setMouseState(true);
         const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-       // console.log(row, col);
         
         this.setState({
             mouseIsPressed: true
@@ -156,7 +149,6 @@ export default class PathfindingVisualizer extends Component {
 
     clearPath() {
         prepareGridForAlgorithm();
-        //this.setState({ grid: getGrid() });
         for (let row = 0; row < GRID_HEIGHT; row++) {
             for (let col = 0; col < GRID_WIDTH; col++) {
                 document.getElementById(`node-${ row }-${ col }`).classList.remove('node-visited');
@@ -172,15 +164,12 @@ export default class PathfindingVisualizer extends Component {
         const grid = getInitialGrid();
         const { newGrid, walls } = generateSimpleGrid(grid, GRID_WIDTH - 1, GRID_HEIGHT - 1);
         this.animateWalls(walls);
-        //console.log(walls);
 
         setNewGridState(newGrid);
         
         setTimeout(() => {
             this.setState({ grid: newGrid })
         }, walls.length * 15)
-
-         //this.setState({ grid: newGrid })
     }
 
     generateSidewinderGrid() {
@@ -200,18 +189,14 @@ export default class PathfindingVisualizer extends Component {
 
     handleMouseUp() {
         setMouseState(false);
-        console.log('The mouse is up!');
         
         this.setState({
             mouseIsPressed: false
         })
         const updatedGrid = getGrid();
-        console.log(updatedGrid[0][0], "jjjjjjjjjjjj");
         
         this.setState({ grid: updatedGrid }, () => {
-            console.log("UPDATED!!!")
-            console.log(this.state.grid[0][0].isWall, getGrid()[0][0].isWall, updatedGrid[0][0].isWall);
-               
+            return;               
         })
     }
 
@@ -220,7 +205,6 @@ export default class PathfindingVisualizer extends Component {
         if (speed === 'fast') speedValue = 10;
             else if (speed === 'medium') speedValue = 15;
                 else speedValue = 20;
-        console.log(speedValue);
         
         this.setState({
             ...this.state,
@@ -234,8 +218,6 @@ export default class PathfindingVisualizer extends Component {
         return (
             <>
                 <div onMouseOver={ () => {
-                    console.log('Hello!');
-                    
                     if (mouseIsPressed) 
                         this.handleMouseUp();
                     } } 
@@ -291,7 +273,6 @@ const getInitialGrid = () => {
         grid.push(currentRow);
     }
     newGrid = grid;
-    console.log(newGrid);
     
     return grid;
 }

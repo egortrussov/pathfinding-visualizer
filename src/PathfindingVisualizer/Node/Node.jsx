@@ -22,10 +22,8 @@ export default class Node extends Component {
         const extraClassName = isFinish ? 'node-finish' :
                                isStart ?  'node-start':
                                isWall ? 'node-wall' :
-                               isVisited ? 'node-visited' : '';
-        //console.log(isVisited, extraClassName);
+                               isVisited ? 'node-visited' : '';       
         
-
         return (
             <div id={`node-${row}-${col}`}
                  className={ `node ${ extraClassName }` }

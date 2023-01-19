@@ -1,6 +1,5 @@
 export function generateSimpleGrid(grid, width, height) {
     // Array for visualizing the creation of walls
-    //let walls = []
 
     let { newGrid, walls } = prepareGrid(grid, width, height);
     grid = newGrid;  
@@ -41,13 +40,12 @@ export function generateSidewinderGrid(grid, width, height) {
     for (let row = 1; row < height; row += 2) {
         for (let col = 1; col < width; col += 2) {
             if (row !== 1) {
-                const randomChoice = Math.ceil(Math.random() * 10) % 2; // 0 or 1 only
+                const randomChoice = Math.ceil(Math.random() * 10) % 2;
                 if (!randomChoice && col !== width - 1) 
                     grid[row][col + 1].isWall = false;
                 else {
                     let selectedColumn = Math.ceil(Math.random() * (col - setStart + 1)) + setStart - 1;
                     selectedColumn += selectedColumn % 2 === 0;
-                    console.log(selectedColumn);
                     
                     grid[row - 1][selectedColumn].isWall = false;
 
@@ -109,7 +107,6 @@ function prepareGrid(grid, width, height) {
             const node = grid[row][col];
             node.isWall = true;
             grid[row][col] = node;
-            //walls.push(node)
         }
     
     return { newGrid: grid, walls: walls };

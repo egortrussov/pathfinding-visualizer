@@ -3,21 +3,6 @@ function sortNodesByDistance(unvisitedNodes) {
 }
 
 function sortNodesByDistanceForAstar(unvisitedNodes) {
-    // let currentClosest, index;
-    // for (let i = 0; i < unvisitedNodes.length; i++) {
-    //     if (!currentClosest || currentClosest.distance > nodes[unvisitedNodes[i]].distance) {
-    //     currentClosest = nodes[unvisitedNodes[i]];
-    //     index = i;
-    //     } else if (currentClosest.distance === nodes[unvisitedNodes[i]].distance) {
-    //     if (currentClosest.gN > nodes[unvisitedNodes[i]].gN) {
-    //         currentClosest = nodes[unvisitedNodes[i]];
-    //         index = i;
-    //     }
-    //     }
-    // }
-    // unvisitedNodes.splice(index, 1);
-    // return currentClosest;
-
     unvisitedNodes.sort((nodeA, nodeB) => {
         
         if (nodeA.distance == nodeB.distance && nodeA.distance !== Infinity) {
@@ -28,9 +13,7 @@ function sortNodesByDistanceForAstar(unvisitedNodes) {
     });
 }
 
-function getDistanceToFinishNode(node, finishNode) {
-    console.log(finishNode, node);
-    
+function getDistanceToFinishNode(node, finishNode) {    
     return Math.abs(finishNode.col - node.col) + Math.abs(finishNode.row - node.row);
 }
 

@@ -79,8 +79,6 @@ class Navbar extends Component {
                                     <button onClick={ () => this.setState({ selectedAlgorithm: 'astar', btnErrorMessage: '' }) }>A*</button>
                                     <button onClick={ () => this.setState({ selectedAlgorithm: 'dfs', btnErrorMessage: '' }) }>DFS</button>
                                     <button onClick={ () => this.setState({ selectedAlgorithm: 'bfs', btnErrorMessage: '' }) }>BFS</button>
-                                    <button>Dijkstra</button>
-                                    <button>Dijkstra</button>
                                 </div>
                             </button>
                             <button onClick={ ()=> this.handlePopout('grid') } id="grid-btn">Mazes & Patterns
@@ -89,7 +87,6 @@ class Navbar extends Component {
                                     <a onClick={ () => generateSidewinderGrid() }>Sidewinder Grid</a>
                                 </div>
                             </button>
-                            <button>Add bomb</button>
                         </div>
                         <div className="btns-middle" >
                             <button onClick={ () => this.runVisualizer() } className="cta">
@@ -113,7 +110,9 @@ class Navbar extends Component {
                     </div>
                 </div>
                 <div className="nav-right">
-                    Check me on github!
+                    <a href='https://github.com/egortrussov'>
+                        Check me on github!
+                    </a>
                 </div>
             </nav>
         )

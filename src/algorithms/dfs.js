@@ -17,11 +17,7 @@ function dfsBuilder(startNode, finishNode, currentNode) {
         
     let neighbors = getUnvisitedNeighbors(currentNode, grid);
     
-    for (let neighbor of neighbors) {
-
-        if (neighbor.isWall) console.log("HHHHHHHHHHHHHHHHHHHHHH");
-        
-        
+    for (let neighbor of neighbors) {              
         if (neighbor.isWall || neighbor.isVisited) continue;
         neighbor.isVisited = true;
         neighbor.previousNode = currentNode;
@@ -38,10 +34,6 @@ export function dfs(grid1, startNode, finishNode) {
     grid = grid1;
     isFound = false;
     visitedNodesInOrder = [];
-    // console.log(grid[0][0].isWall, grid1[0][0].isWall);
-    // console.log(grid[17][17].isVisited, grid[17][17].isWall);
-    
-    
      
     dfsBuilder(startNode, finishNode, startNode);
     return visitedNodesInOrder;

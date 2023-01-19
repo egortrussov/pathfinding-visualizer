@@ -37,7 +37,10 @@ nav .wrapper .nav-btns {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-left: 2rem;
+  left: auto;
+  right: auto;
+  
+  /* margin-left: 2rem; */
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -57,6 +60,12 @@ nav .wrapper .nav-btns button {
   -webkit-transition: all .2s;
   transition: all .2s;
   display: inline-block;
+}
+
+.btns-middle, .btns-left, .btns-right {
+  margin: auto;
+  left: auto;
+  right: auto
 }
 
 nav .wrapper .nav-btns button.active {
@@ -124,3 +133,8 @@ nav .wrapper .nav-btns button.cta:hover {
   background-color: #00b383;
 }
 /*# sourceMappingURL=Navbar.css.map */
+
+a {
+  color: #fff !important; 
+  text-decoration: none !important;
+}
